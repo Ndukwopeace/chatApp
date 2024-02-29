@@ -1,3 +1,6 @@
+import roomsModel from "../../models/rooms.model.js";
+
+
 export default  class roomController{
     socket;
     constructor(socket){
@@ -6,9 +9,21 @@ export default  class roomController{
     joinRoom = ({roomId}) =>{
         this.socket.join(roomId)
     }
-    newRoomCreated = ({roomId}) =>{
+    newRoomCreated = ({roomId , userId}) =>{
+        const room = new roomsModel({
+            name : 'Test',
+            roomId: roomId,
+            userId
+        })
+        room.save();
+        this.socket.emit("new-room-created", {room} )
         
-        this.socket.broadcast.emit("new-room-created", {roomId} )
+    }
+
+    roomRemoved = async ({roomId}) => {
+        // Emit to everybody including the user deleting 
+        const res = await roomsModel.deleteOne({roomId : roomId});
         
+        this.socket.emit("room-removed-backend" , {roomId} );
     }
 } 

@@ -13,6 +13,7 @@ const sockets = (socket) =>{
     
     socket.on("join-room" , RoomController.joinRoom)
     socket.on("new-room-created" , RoomController.newRoomCreated)
+    socket.on("room-removed" , RoomController.roomRemoved)
 
 
     // to disconnect 

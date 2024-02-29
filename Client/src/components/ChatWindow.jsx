@@ -62,6 +62,15 @@ const ChatWindow = () => {
       setChat((prev) => [...prev, {message , recieved : false}]);
       setMessage("")
     }
+
+    const deleteRoom = () =>{
+      async function deleteFromBackend(){
+          await socket.emit("room-removed" , {roomId})
+      }
+     
+      deleteFromBackend();
+  }
+
   return (
 
     <>
@@ -70,7 +79,13 @@ const ChatWindow = () => {
         marginTop: "5rem",
         backgroundColor:"grey"}}>
           {
-            roomId && <Typography sx={{textAlign:"center"}}>Room:{roomId}</Typography>
+            roomId &&( 
+              <>
+            <Typography sx={{textAlign:"center"}}>Room:{roomId}</Typography>
+            <Typography ><Button onClick={deleteRoom}> Delete Room </Button>  </Typography>
+
+              </>
+              )
           }
             
           <Box style={{ marginBottom: '5rem' }}>
